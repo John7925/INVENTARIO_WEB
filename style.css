@@ -1,0 +1,555 @@
+/* 🎨 Estilo general */
+body {
+  font-family: 'Roboto', 'Cabin', sans-serif;
+  background-color: #fff;
+  color: #000;
+  margin: 30px;
+}
+
+/* Ajuste de columnas para campos del resguardante */
+.col-span-5, .col-span-3 {
+  grid-column: span 3 !important;
+}
+
+/* 🏛️ encabezado de la Fila institucional con alineación izquierda y derecha */
+.fila-institucional {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fcfafa; 
+  color: rgb(10, 10, 10);
+  padding: 20px 30px;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+.izquierda {
+  text-align: left; 
+  flex: 1;
+}
+
+.derecha {
+  text-align: right;
+  flex: 1;
+}
+
+.recuadro-confirmacion {  /*recuadro de texto indicando coincidencias*/
+  background-color: #e0f3e0; /* Verde claro institucional */
+  border: 2px solid #006341; /* Verde CDMX */
+  padding: 16px;
+  margin-top: 20px;
+  border-radius: 8px;
+  font-family: 'Arial', sans-serif;
+  color: #003820;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  .recuadro-confirmacion {
+  background-color: #e0f3e0;
+  border: 2px solid #006341;
+  padding: 16px;
+  margin-top: 20px;
+
+  /* 👇 Centrado horizontal */
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+
+  border-radius: 8px;
+  font-family: 'Arial', sans-serif;
+  color: #003820;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+}
+
+.recuadro-confirmacion p {
+  margin: 8px 0;
+  font-size: 16px;
+}
+
+.recuadro-confirmacion button {
+  background-color: #006341;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  font-size: 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.recuadro-confirmacion button:hover {
+  background-color: #004d2a;
+}
+
+
+/*HOJA CONSULTA RESGUARDANTE logotipo institucional */
+.logo {
+  width: 660px;
+  height: auto;
+  object-fit: contain;
+}
+/*encabezado con texto sedesa, dgayf, etc..*/
+.texto-institucional {
+  flex: 1;
+  text-align: right;
+  font-size: 15px; /*SECRETARÍA DE SALUD DE LA CIUDAD DE MÉXICO */
+  line-height: 1.4;
+  display: block;
+}
+.encabezado {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #800000;
+  font-weight: bold;
+  font-size: 20px;
+}
+/* 🔍 Centrado de la fila de búsqueda QR*/
+.fila-busqueda {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+label {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+input[type="text"],
+input[type="number"] {
+  padding: 8px;
+  font-size: 14px;
+  width: 200px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+/* 🟩 Botones */
+button {
+  padding: 8px 16px;
+  font-size: 14px;
+  background-color: #006341;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+button:hover {
+  background-color: #006341;
+}
+/* 📋 Tablas (si se usan) */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  margin-top: 20px;
+}
+
+td {
+  border: 1px solid #000;
+  padding: 8px;
+  vertical-align: top;
+}
+
+td[colspan] {
+  font-weight: bold;
+}
+
+#datosEmpleado {
+  background-color: #f9f9f9;
+}
+/* bloque 2 🧾 Encabezado del documento */
+.fila-encabezado {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #006341;
+  color: #ffffff; /*RESGUARDO DE BIENES INVENTARIABLES*/
+  font-weight: bold;
+  padding: 10px 20px;
+  margin-bottom: 20px;
+}
+
+/* 🧱 Estructura de columnas para resguardante.html */
+.fila-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+[class^="col-"] {
+  grid-column: span 1;
+}
+
+.col-span-1 { grid-column: span 1; }
+.col-span-2 { grid-column: span 2; }
+
+/* texto en gris del concepto a llenar */
+.etiqueta-gris {
+  background-color: #f0f0f0;
+  font-weight: bold;
+  padding: 6px;
+  justify-content: flex-end; /* Alinea el contenido a la derecha */
+  text-align: right;
+  font-size: 13px;
+}
+.etiqueta-gris, /*altura de las celdas del resguardante*/
+.campo-dato {
+  min-height: 25px;       /* Altura mínima uniforme */
+  display: flex;
+  align-items: center;    /* Centra verticalmente el texto */
+}
+.campo-dato {   /*datos de las celdas en color guris (nombre del resguardante, puesto ...*/
+  background-color: #ffffff; /*celdas de respuesta*/
+  border: 1px solid #ccc;
+  padding: 6px;
+  text-align: left;
+  font-size: 13px;
+}
+
+.encabezado-izquierda {
+  text-align: left;
+  flex: 1;
+}
+
+.encabezado-derecha {
+  text-align: right;
+  flex: 1;
+}
+.celda-encabezado {
+  padding: 6px;
+  font-size: 13px;
+  text-align: center;
+  border: 1px solid #000; /* ✅ Borde negro visible */
+  background-color: #229e28; /* ✅ Color institucional */
+  color: white;
+  font-weight: bold;
+}
+
+/* 📋 Encabezado y filas de la tabla institucional */
+.encabezado-tabla,
+.fila-bien {
+  height: 60px;              /* altura fija para todas las filas */
+  align-items: center;       /* centra verticalmente el contenido */
+  display: grid;
+  grid-template-columns:
+    1fr   /* CON. */
+    1.5fr /* CLAVE CAMB. */
+    3.5fr /* DESCRIPCIÓN */
+    2fr   /* MARCA */
+    2fr   /* MODELO */
+    2fr   /* SERIE */
+    2fr   /* PLACAS */
+    2fr   /* MOTOR */
+    2fr   /* COSTO */
+    2fr   /* INVENTARIO */
+    3fr;  /* OBSERVACIONES */
+  width: 100%;
+  box-sizing: border-box;
+  gap: 0;
+}
+.container {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+/* 🟥 Encabezado de cada columna */
+.celda-encabezado {
+  padding: 10px;
+  font-size: 13px;
+  text-align: center;
+  border: 1px solid #fff;
+  background-color: #9E2249; /* Color institucional CDMX */
+  color: white;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+/* 📦 Celdas de datos */
+.celda-dato {
+  height: 100%;               /* ocupa toda la altura de la fila */
+  padding: 6px 8px;
+  overflow: hidden;           /* evita desbordamiento de texto */
+  text-overflow: ellipsis;    /* opcional: agrega "..." si el texto es largo */
+  white-space: nowrap;        /* evita saltos de línea */
+  display: flex;
+  align-items: center;        /* centra verticalmente el texto */
+  justify-content: center;
+  box-sizing: border-box;
+  border: 1px solid #000;
+  background-color: #fff;
+  font-size: 13px;
+  line-height: 1.4;
+  border: 1px solid #000;
+  background-color: #fff;
+}
+/* 💰 Alineación derecha para columna COSTO */
+.celda-dato.ancho-costo {
+  justify-content: flex-end;
+  padding-right: 12px;
+}
+/* 📝 Alineación izquierda para columna OBSERVACIONES */
+.celda-dato.ancho-observaciones {
+  justify-content: flex-start;
+  padding-left: 12px;
+}
+/* 📘 Estilo específico para la columna DESCRIPCIÓN */
+.celda-dato.celda-descripcion {
+  display: flex;
+  flex-direction: column;         /* ✅ ESTA LÍNEA ES CLAVE */
+  justify-content: center;        /* opcional: si quieres controlar verticalmente con más precisión */
+  align-items: flex-start;        /* alineado arriba por defecto */
+  text-align: left;               /* ✅ alineación horizontal a la izquierda */
+  white-space: normal;
+  overflow-wrap: break-word;
+  height: 100%;
+  padding: 6px 8px;
+  line-height: 1.4;
+}
+
+
+/* Centrado vertical para texto corto */
+.celda-dato.celda-descripcion.centrada {
+  align-items: center; /* verticalmente centrado */
+  text-align: left;    /* ✅ mantiene alineación horizontal a la izquierda */
+}
+
+/* Alineado arriba para texto largo */
+.celda-dato.celda-descripcion.arriba {
+  align-items: flex-start; /* verticalmente arriba */
+  text-align: left;        /* ✅ mantiene alineación horizontal a la izquierda */
+}
+
+/* 🧱 Contenedor principal de la tabla */
+#tablaBienes {
+  width: 100%;
+  min-width: 1810px; /* Suma total de columnas */
+  margin: 0 auto;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+/* qr respuesta a la busqueda ⚠️ Mensaje si no hay bienes */
+.mensaje-sin-bienes {
+  padding: 12px;
+  background-color: #ffecec;
+  color: #800000;
+  font-weight: bold;
+  border: 1px solid #cc0000;
+  border-radius: 6px;
+  margin-top: 20px;
+  text-align: center;
+}
+/* 🧾 Texto legal */
+.texto-legal-sin-recuadro {
+  font-size: 12px;
+  text-align: justify;
+  padding: 10px;
+}
+/* 🧾 Fila legal en una sola línea */
+.fila-legal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+/* 📜 Responsabilidad de los bienes */
+.texto-legal-sin-recuadro {
+  font-size: 13px;
+  text-align: justify;         /* ✅ Justifica el texto */
+  max-width: 100%;
+  white-space: normal;         /* ✅ Permite saltos de línea */
+  overflow: visible;           /* ✅ Muestra todo el contenido */
+  text-overflow: unset;        /* ✅ Elimina los puntos suspensivos */
+  padding: 10px 20px;          /* ✅ Margen interno para que no pegue a los bordes */
+}
+
+/* 📱 Responsive para móviles */
+@media screen and (max-width: 600px) {
+  body {
+    margin: 10px;
+    font-size: 16px;
+  }
+
+  .encabezado {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+
+  .formulario {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  label {
+    margin-right: 0;
+    margin-bottom: 5px;
+    display: block;
+    text-align: left;
+  }
+
+  input,
+  button {
+    width: 90%;
+    max-width: 300px;
+    font-size: 16px;
+    margin-left: 0;
+  }
+
+  .fila-institucional {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .texto-institucional {
+    text-align: center;
+    font-size: 13px;
+  }
+
+  .fila-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .encabezado-tabla,
+  .fila-bien {
+    grid-template-columns: repeat(2, 1fr);
+    font-size: 12px;
+  }
+
+  .celda-encabezado,
+  .celda-bien {
+    text-align: left;
+    padding: 4px;
+  }
+
+  .campo-dato,
+  .etiqueta-gris {
+    font-size: 12px;
+  }
+
+  #qrScanner,
+video,
+canvas {
+  width: 100% !important;
+  height: auto !important;
+  max-width: 100%;
+  display: block;
+  margin: 0 auto;
+}
+}
+
+.recuadro-confirmacion {   /*ultima modificacin recuadro de notificacion*/
+  background-color: #e0f3e0; /* Verde claro institucional */
+  border: 2px solid #006341; /* Verde CDMX */
+  padding: 16px;
+  margin-top: 20px;
+  border-radius: 8px;
+  font-family: 'Arial', sans-serif;
+  color: #003820;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.recuadro-confirmacion p {
+  margin: 8px 0;
+  font-size: 16px;
+}
+
+.recuadro-confirmacion button {
+  background-color: #006341;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  font-size: 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.recuadro-confirmacion button:hover {
+  background-color: #004d2a;
+}
+
+#resumenBox {
+  margin-top: 20px;
+  padding: 12px;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 16px;
+  font-family: 'Arial', sans-serif;
+  background-color: #f5f5f5;
+  color: #006341; /* Verde institucional por defecto */
+  border-left: 5px solid #006341;
+}
+
+
+/* 🟥 encabezado de consulta por resguardante */
+.fila-encabezado-secundario {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff; /* gris institucional */
+  padding: 10px 15px;
+  gap: 20px;
+}
+
+.fila-encabezado-secundario h1 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: bold;
+  color:  #800000(150, 41, 41); /* letras blancas */
+  text-align: center;
+}
+
+#contenedorBotonExcel {
+  position: absolute;
+  right: 15px;
+}
+@media screen and (max-width: 600px) {
+  body {
+    font-size: 14px;
+    margin: 0;
+    padding: 0;
+  }
+
+  button {
+    width: 100%;
+    font-size: 14px;
+  }
+
+  .fila-botones,
+  .fila-opciones,
+  .contenedor-menu {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .logo,
+  .encabezado {
+    width: 100%;
+    text-align: center;
+  }
+}
+@media screen and (max-width: 600px) {
+  #reader {
+    width: 100% !important;
+    height: auto !important;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  video,
+  canvas {
+    width: 100% !important;
+    height: auto !important;
+    display: block;
+  }
+}

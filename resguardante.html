@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Consulta de Bienes</title>
+  <link rel="stylesheet" href="style.css" />
+  <script defer src="script-resguardante.js"></script>
+</head>
+<body>
+ <!-- 🟩 Encabezado horizontal -->
+<div class="fila-encabezado-secundario">
+  <h1 class="encabezado">CONSULTA POR RESGUARDANTE</h1>
+  <div id="contenedorBotonExcel" style="display: none;">
+    <button id="botonDescargarExcel">Descargar Excel</button>
+  </div>
+</div>
+
+  <!-- Búsqueda -->
+   
+  <div id="encabezadoInstitucional">
+  <!-- Aquí van la leyenda, los datos del resguardante, y el botón de descarga -->
+</div>
+
+  <div class="fila-busqueda">
+    <input type="text" id="idEmpInput" placeholder="NÚMERO DE EMPLEADO" />
+    <button onclick="buscarEmpleado()">Buscar</button>
+    <button onclick="limpiarCampos()">Limpiar</button>
+    <button class="boton-inicio">INICIO</button>
+  </div>
+
+   <div style="height: .1px;"></div>
+
+  <!-- bloque Encabezado institucional -->
+  <div class="fila-institucional">
+    <div class="logo-container">
+      <img src="logo-cdmx.png" alt="Logo Institucional" class="logo" />
+    </div>
+    <div class="texto-institucional">
+      <p>
+        <strong>SECRETARÍA DE SALUD DE LA CIUDAD DE MÉXICO</strong><br>
+        DIRECCIÓN GENERAL DE ADMINISTRACIÓN Y FINANZAS<br>
+        DIRECCIÓN DE RECURSOS MATERIALES, ABASTECIMIENTOS Y SERVICIOS<br>
+        SUBDIRECCIÓN DE BIENES MUEBLES E INVENTARIOS<br>
+        JEFATURA DE LA UNIDAD DEPARTAMENTAL DE CONTROL DE BIENES
+      </p>
+    </div>
+  </div>
+
+  <div class="fila-encabezado">
+    <div class="encabezado-izquierda">RESGUARDO DE BIENES INVENTARIABLES</div>
+    <div class="encabezado-derecha">EJERCICIO FISCAL 2025</div>
+  </div>
+<!-- 🟩 Recuadro de confirmación -->
+<div id="recuadroConfirmacion" class="recuadro-confirmacion" style="display:none;">
+  <p><strong>¿Deseas consultar los bienes del empleado?</strong></p>
+  <p>ID EMP: <span id="idConfirmado"></span></p>
+  <p>Nombre: <span id="nombreConfirmado"></span></p>
+  <p>Total de bienes: <span id="totalBienes"></span></p>
+
+  <!-- ✅ Botón institucional -->
+  <button id="botonAceptarConfirmacion" style="
+    background-color: #006341;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+  ">Aceptar</button>
+</div>
+
+  <div style="height: 1px;"></div>
+
+      <!-- Datos del resguardante -->
+  <div class="fila-grid">
+    <div class="col-2 col-span-1 etiqueta-gris">NOMBRE DEL<br>RESGUARDANTE:</div>
+    <div class="col-3 col-span-2 campo-dato" id="nombreResguardante"></div>
+
+    <div class="col-6 col-span-1 etiqueta-gris">NÚMERO DE<br>EMPLEADO:</div>
+    <div class="col-7 col-span-2 campo-dato" id="numeroEmpleado"></div>
+
+    <div class="col-9 col-span-1 etiqueta-gris">RFC CON<br>HOMOCLAVE:</div>
+    <div class="col-10 col-span-1 campo-dato" id="rfcEmpleado"></div>
+  </div>
+
+  <div style="height: 2px;"></div>
+
+  <div class="fila-grid">
+    <div class="col-2 col-span-1 etiqueta-gris">PUESTO:</div>
+    <div class="col-3 col-span-2 campo-dato" id="puestoEmpleado"></div>
+
+    <div class="col-6 col-span-1 etiqueta-gris">RÉGIMEN DE CONTRATACIÓN:</div>
+    <div class="col-7 col-span-3 campo-dato" id="regimenContratacion"></div>
+  </div>
+
+  <div style="height: 2px;"></div>
+
+  <div class="fila-grid">
+    <div class="col-2 col-span-1 etiqueta-gris">ÁREA:</div>
+    <div class="col-3 col-span-5 campo-dato" id="areaAdscripcion"></div>
+  </div>
+
+  <div style="height: 2px;"></div>
+
+  <div class="fila-grid">
+    <div class="col-2 col-span-1 etiqueta-gris">UNIDAD DE ADSCRIPCIÓN:</div>
+    <div class="col-3 col-span-5 campo-dato" id="unidadAdscripcion"></div>
+  </div>
+
+  <div style="height: 2px;"></div>
+
+  <div class="fila-legal">
+  <div class="texto-legal-sin-recuadro">
+    LOS BIENES DE ESTA RELACIÓN SON DE MI RESPONSABILIDAD, POR LO QUE CUALQUIER TIPO DE MOVIMIENTO (CAMBIO DE USUARIO, ROBO, DESTRUCCIÓN ACCIDENTADA, BAJA, ETC.) SE INFORMARÁ POR OFICIO A LA JEFATURA DE UNIDAD DEPARTAMENTAL DE CONTROL DE BIENES
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+
+
+  
+
+   <div id="tablaBienes"></div> <!-- ✅ cierre correcto -->
+
+
+   
+</body>
+</html>
