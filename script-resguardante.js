@@ -114,7 +114,7 @@ function limpiarCampos() {
 
 // 🔙 Botón INICIO
 document.querySelector(".boton-inicio").addEventListener("click", () => {
-  window.location.href = "menu.html";
+  window.location.href = "index.html";
 });
 
 // 🔍 Función principal de búsqueda
