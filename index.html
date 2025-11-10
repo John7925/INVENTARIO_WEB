@@ -81,13 +81,19 @@
 <body class="menu-page">
 
   <!-- 🔒 BLOQUE DE ACCESO INSTITUCIONAL -->
-  <div id="bloque-solicitud" style="text-align:center; margin-top:50px;">
-    <h2 style="color:#333;">🔒 NECESITA AUTORIZACIÓN</h2>
-    <p>Ingrese su nombre completo y correo activo para solicitar acceso.</p>
-    <input type="text" id="nombre" placeholder="Nombre completo" style="width:300px; padding:8px;"><br><br>
-    <input type="email" id="correo" placeholder="Correo institucional " style="width:300px; padding:8px;"><br><br>
-    <button onclick="enviarSolicitud()" style="padding:10px 20px;">Enviar solicitud</button>
-  </div>
+<div id="bloque-solicitud" style="text-align:center; margin-top:50px;">
+  <h2 style="color:#333;">🔒 NECESITA AUTORIZACIÓN</h2>
+  <p>Ingrese su nombre completo y correo activo para solicitar acceso.</p>
+  <input type="text" id="nombre" placeholder="Nombre completo" style="width:300px; padding:8px;"><br><br>
+  <input type="email" id="correo" placeholder="Correo institucional" style="width:300px; padding:8px;"><br><br>
+  <button onclick="enviarSolicitud()" style="padding:10px 20px;">Enviar solicitud</button>
+  
+  <!-- 🔑 Nueva opción para usuarios ya registrados -->
+  <p style="margin-top:20px;">¿Ya se registró?</p>
+  <button onclick="accesoDirecto()" style="padding:10px 20px; background-color:#006341; color:white; border:none; border-radius:6px;">
+    Ingresar con correo registrado
+  </button>
+</div>
 
   <!-- 🔓 BLOQUE PRINCIPAL DE LA APP -->
   <div id="bloque-app" style="display:none;">
@@ -136,7 +142,7 @@ fetch(`${URL_SCRIPT}?accion=solicitud&nombre=${encodeURIComponent(nombre)}&corre
   let correo = localStorage.getItem('correo');
 
   if (!correo || correo.trim() === "") {
-    correo = prompt("Ingresa tu correo institucional:");
+    correo = prompt("Ingresa tu correo institucional o personal:");
     if (!correo || correo.trim() === "") {
       alert("Correo no válido. Intenta de nuevo.");
       localStorage.removeItem('correo');
@@ -164,7 +170,38 @@ fetch(`${URL_SCRIPT}?accion=solicitud&nombre=${encodeURIComponent(nombre)}&corre
     });
 }
 
+// 🔑 Nueva función para acceso directo
+  function accesoDirecto() {
+    let correo = prompt("Ingrese el correo institucional con el que se registró:");
+    if (!correo || correo.trim() === "") {
+      alert("Correo no válido. Intente de nuevo.");
+      return;
+    }
 
+    localStorage.setItem('correo', correo);
+
+    fetch(`${URL_SCRIPT}?accion=validar&correo=${encodeURIComponent(correo)}`)
+      .then(res => res.text())
+      .then(respuesta => {
+        if (respuesta === 'autorizado') {
+          document.getElementById('bloque-solicitud').style.display = 'none';
+          document.getElementById('bloque-app').style.display = 'block';
+        } else {
+          alert("Acceso denegado. Solicite autorización.");
+          localStorage.removeItem('correo');
+        }
+      })
+      .catch(error => {
+        console.error("Error en validación:", error);
+        alert("Error de validación. Intente más tarde.");
+      });
+  }
+
+  window.onload = validarAcceso;
+</script>
+
+</body>
+</html>
 
   window.onload = validarAcceso;
 </script>
