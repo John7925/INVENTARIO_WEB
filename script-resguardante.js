@@ -5,7 +5,7 @@ async function buscarEmpleado() {
     return;
   }
 
-  const url = `https://script.google.com/macros/s/AKfycbx6XbWnZoLgCQ8AzXLP-yxgFpz1eBh4-QSqwgwh7t_SLbCCQqtOtFfsOUxGKVe-G1Fb/exec?idEmp=${idEmp}&esPruebaLocal=true`;
+  const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbx6XbWnZoLgCQ8AzXLP-yxgFpz1eBh4-QSqwgwh7t_SLbCCQqtOtFfsOUxGKVe-G1Fb/exec";
   try {
     const response = await fetch(url);
     const data = await response.json();
