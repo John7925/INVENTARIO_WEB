@@ -6,33 +6,56 @@
   <title>Consulta de Bienes</title>
   <link rel="stylesheet" href="style.css" />
   <script defer src="script-resguardante.js"></script>
+
+  <!-- 🔒 Bloque de validación institucional -->
+  <script>
+    const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbxu6fuNY-Vc4fIYiPNTGhobaAsbkgBOD9koCgOvbZPUNy6skr2YTuZ_FE3WGVDbXlFm/exec";
+
+    async function validarAccesoPagina() {
+      let correo = localStorage.getItem('correo');
+      if (!correo || correo.trim() === "") {
+        alert("Acceso restringido. Ingresa desde el menú principal.");
+        window.location.href = "index.html";
+        return;
+      }
+
+      try {
+        const res = await fetch(`${URL_SCRIPT}?accion=validar&correo=${encodeURIComponent(correo)}`);
+        const respuesta = await res.text();
+
+        if (respuesta !== "autorizado") {
+          alert("Acceso denegado. Solicita autorización desde el menú principal.");
+          localStorage.removeItem('correo');
+          window.location.href = "index.html";
+        }
+      } catch (error) {
+        console.error("Error en validación:", error);
+        alert("Error de validación. Regresa al menú principal.");
+        window.location.href = "index.html";
+      }
+    }
+
+    window.onload = validarAccesoPagina;
+  </script>
 </head>
 <body>
- <!-- 🟩 Encabezado horizontal -->
-<div class="fila-encabezado-secundario">
-  <h1 class="encabezado">CONSULTA POR RESGUARDANTE</h1>
-  <div id="contenedorBotonExcel" style="display: none;">
-    <button id="botonDescargarExcel">Descargar Excel</button>
+  <!-- 🟩 Encabezado horizontal -->
+  <div class="fila-encabezado-secundario">
+    <h1 class="encabezado">CONSULTA POR RESGUARDANTE</h1>
+    <div id="contenedorBotonExcel" style="display: none;">
+      <button id="botonDescargarExcel">Descargar Excel</button>
+    </div>
   </div>
-</div>
 
   <!-- Búsqueda -->
-   
-  <div id="encabezadoInstitucional">
-  <!-- Aquí van la leyenda, los datos del resguardante, y el botón de descarga -->
-</div>
-
   <div class="fila-busqueda">
-  <input type="text" id="idEmpInput" placeholder="NÚMERO DE EMPLEADO" />
-  <button onclick="buscarEmpleado()">Buscar</button>
-  <button onclick="limpiarCampos()">Limpiar</button>
-  <button class="boton-inicio" onclick="location.href='index.html'">INICIO</button>
-</div>
+    <input type="text" id="idEmpInput" placeholder="NÚMERO DE EMPLEADO" />
+    <button onclick="buscarEmpleado()">Buscar</button>
+    <button onclick="limpiarCampos()">Limpiar</button>
+    <button class="boton-inicio" onclick="location.href='index.html'">INICIO</button>
+  </div>
 
-
-   <div style="height: .1px;"></div>
-
-  <!-- bloque Encabezado institucional -->
+  <!-- Encabezado institucional -->
   <div class="fila-institucional">
     <div class="logo-container">
       <img src="logo-cdmx.png" alt="Logo Institucional" class="logo" />
@@ -52,29 +75,20 @@
     <div class="encabezado-izquierda">RESGUARDO DE BIENES INVENTARIABLES</div>
     <div class="encabezado-derecha">EJERCICIO FISCAL 2025</div>
   </div>
-<!-- 🟩 Recuadro de confirmación -->
-<div id="recuadroConfirmacion" class="recuadro-confirmacion" style="display:none;">
-  <p><strong>¿Deseas consultar los bienes del empleado?</strong></p>
-  <p>ID EMP: <span id="idConfirmado"></span></p>
-  <p>Nombre: <span id="nombreConfirmado"></span></p>
-  <p>Total de bienes: <span id="totalBienes"></span></p>
 
-  <!-- ✅ Botón institucional -->
-  <button id="botonAceptarConfirmacion" style="
-    background-color: #006341;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-weight: bold;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-top: 10px;
-  ">Aceptar</button>
-</div>
+  <!-- 🟩 Recuadro de confirmación -->
+  <div id="recuadroConfirmacion" class="recuadro-confirmacion" style="display:none;">
+    <p><strong>¿Deseas consultar los bienes del empleado?</strong></p>
+    <p>ID EMP: <span id="idConfirmado"></span></p>
+    <p>Nombre: <span id="nombreConfirmado"></span></p>
+    <p>Total de bienes: <span id="totalBienes"></span></p>
+    <button id="botonAceptarConfirmacion"
+      style="background-color:#006341;color:white;border:none;padding:10px 20px;font-weight:bold;border-radius:4px;cursor:pointer;margin-top:10px;">
+      Aceptar
+    </button>
+  </div>
 
-  <div style="height: 1px;"></div>
-
-      <!-- Datos del resguardante -->
+  <!-- Datos del resguardante -->
   <div class="fila-grid">
     <div class="col-2 col-span-1 etiqueta-gris">NOMBRE DEL<br>RESGUARDANTE:</div>
     <div class="col-3 col-span-2 campo-dato" id="nombreResguardante"></div>
@@ -86,8 +100,6 @@
     <div class="col-10 col-span-1 campo-dato" id="rfcEmpleado"></div>
   </div>
 
-  <div style="height: 2px;"></div>
-
   <div class="fila-grid">
     <div class="col-2 col-span-1 etiqueta-gris">PUESTO:</div>
     <div class="col-3 col-span-2 campo-dato" id="puestoEmpleado"></div>
@@ -96,35 +108,23 @@
     <div class="col-7 col-span-3 campo-dato" id="regimenContratacion"></div>
   </div>
 
-  <div style="height: 2px;"></div>
-
   <div class="fila-grid">
     <div class="col-2 col-span-1 etiqueta-gris">ÁREA:</div>
     <div class="col-3 col-span-5 campo-dato" id="areaAdscripcion"></div>
   </div>
-
-  <div style="height: 2px;"></div>
 
   <div class="fila-grid">
     <div class="col-2 col-span-1 etiqueta-gris">UNIDAD DE ADSCRIPCIÓN:</div>
     <div class="col-3 col-span-5 campo-dato" id="unidadAdscripcion"></div>
   </div>
 
-  <div style="height: 2px;"></div>
-
   <div class="fila-legal">
-  <div class="texto-legal-sin-recuadro">
-    LOS BIENES DE ESTA RELACIÓN SON DE MI RESPONSABILIDAD, POR LO QUE CUALQUIER TIPO DE MOVIMIENTO (CAMBIO DE USUARIO, ROBO, DESTRUCCIÓN ACCIDENTADA, BAJA, ETC.) SE INFORMARÁ POR OFICIO A LA JEFATURA DE UNIDAD DEPARTAMENTAL DE CONTROL DE BIENES
+    <div class="texto-legal-sin-recuadro">
+      LOS BIENES DE ESTA RELACIÓN SON DE MI RESPONSABILIDAD, POR LO QUE CUALQUIER TIPO DE MOVIMIENTO (CAMBIO DE USUARIO, ROBO, DESTRUCCIÓN ACCIDENTADA, BAJA, ETC.) SE INFORMARÁ POR OFICIO A LA JEFATURA DE UNIDAD DEPARTAMENTAL DE CONTROL DE BIENES
+    </div>
   </div>
-</div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-
-  
-
-   <div id="tablaBienes"></div> <!-- ✅ cierre correcto -->
-
-
-   
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <div id="tablaBienes"></div>
 </body>
 </html>

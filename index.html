@@ -85,7 +85,7 @@
     <h2 style="color:#333;">🔒 NECESITA AUTORIZACIÓN</h2>
     <p>Ingrese su nombre completo y correo activo para solicitar acceso.</p>
     <input type="text" id="nombre" placeholder="Nombre completo" style="width:300px; padding:8px;"><br><br>
-    <input type="email" id="correo" placeholder="Correo institucional" style="width:300px; padding:8px;"><br><br>
+    <input type="email" id="correo" placeholder="Correo institucional " style="width:300px; padding:8px;"><br><br>
     <button onclick="enviarSolicitud()" style="padding:10px 20px;">Enviar solicitud</button>
   </div>
 
@@ -111,7 +111,7 @@
     </footer>
   </div>
 <script>
-  const URL_SCRIPT = "https://script.google.com/macros/s/TU_DEPLOYMENT_ID/exec"; // ← Reemplaza con tu URL real
+  const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbxu6fuNY-Vc4fIYiPNTGhobaAsbkgBOD9koCgOvbZPUNy6skr2YTuZ_FE3WGVDbXlFm/exec";
 
   function enviarSolicitud() {
     const nombre = document.getElementById('nombre').value.trim();
@@ -122,30 +122,49 @@
       return;
     }
 
-    fetch(`${URL_SCRIPT}?accion=solicitud&nombre=${encodeURIComponent(nombre)}&correo=${encodeURIComponent(correo)}`)
-      .then(res => res.text())
-      .then(msg => alert(msg));
+    console.log("🔍 URL generada:", `${URL_SCRIPT}?accion=validar&correo=${encodeURIComponent(correo)}`);
+    console.log("📧 Correo recuperado:", correo);
+
+
+fetch(`${URL_SCRIPT}?accion=solicitud&nombre=${encodeURIComponent(nombre)}&correo=${encodeURIComponent(correo)}`)
+  .then(res => res.text())
+  .then(msg => alert(msg));
+
   }
 
   function validarAcceso() {
-    let correo = localStorage.getItem('correo');
-    if (!correo) {
-      correo = prompt("Ingresa tu correo institucional:");
-      localStorage.setItem('correo', correo);
-    }
+  let correo = localStorage.getItem('correo');
 
-    fetch(`${URL_SCRIPT}?accion=validar&correo=${encodeURIComponent(correo)}`)
-      .then(res => res.text())
-      .then(respuesta => {
-        if (respuesta === 'autorizado') {
-          document.getElementById('bloque-solicitud').style.display = 'none';
-          document.getElementById('bloque-app').style.display = 'block';
-        } else {
-          alert('Acceso denegado. Solicita autorización.');
-          localStorage.removeItem('correo');
-        }
-      });
+  if (!correo || correo.trim() === "") {
+    correo = prompt("Ingresa tu correo institucional:");
+    if (!correo || correo.trim() === "") {
+      alert("Correo no válido. Intenta de nuevo.");
+      localStorage.removeItem('correo');
+      return;
+    }
+    localStorage.setItem('correo', correo);
   }
+
+  console.log("📦 Correo en localStorage:", correo);
+
+  fetch(`${URL_SCRIPT}?accion=validar&correo=${encodeURIComponent(correo)}`)
+    .then(res => res.text())
+    .then(respuesta => {
+      if (respuesta === 'autorizado') {
+        document.getElementById('bloque-solicitud').style.display = 'none';
+        document.getElementById('bloque-app').style.display = 'block';
+      } else {
+        alert('Acceso denegado. Solicita autorización.');
+        localStorage.removeItem('correo');
+      }
+    })
+    .catch(error => {
+      console.error("Error en validación:", error);
+      alert("Error de validación. Regresa más tarde.");
+    });
+}
+
+
 
   window.onload = validarAcceso;
 </script>

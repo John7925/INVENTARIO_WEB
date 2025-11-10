@@ -154,7 +154,38 @@
   </style>
 </head>
 <body>
+<!-- 🔒 Bloque de validación institucional -->
+  <script>
+    const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbxu6fuNY-Vc4fIYiPNTGhobaAsbkgBOD9koCgOvbZPUNy6skr2YTuZ_FE3WGVDbXlFm/exec";
 
+    async function validarAccesoPagina() {
+      let correo = localStorage.getItem('correo');
+      if (!correo || correo.trim() === "") {
+        alert("Acceso restringido. Ingresa desde el menú principal.");
+        window.location.href = "index.html";
+        return;
+      }
+
+      try {
+        const res = await fetch(`${URL_SCRIPT}?accion=validar&correo=${encodeURIComponent(correo)}`);
+        const respuesta = await res.text();
+
+        if (respuesta !== "autorizado") {
+          alert("Acceso denegado. Solicita autorización desde el menú principal.");
+          localStorage.removeItem('correo');
+          window.location.href = "index.html";
+        }
+      } catch (error) {
+        console.error("Error en validación:", error);
+        alert("Error de validación. Regresa al menú principal.");
+        window.location.href = "index.html";
+      }
+    }
+
+    window.onload = validarAccesoPagina;
+  </script>
+</head>
+<body>
 
   <!-- 🏛️ Encabezado institucional -->
   <header>
@@ -226,7 +257,7 @@
     }
 
     async function consultarActivo(folio) {
-      const response = await fetch(`https://script.google.com/macros/s/AKfycbw5vOGG4cdBjQ424X33UFIAbXY1cJmsVzcW2ETmwYl8ZrYVL06UoH61CnNqHAEHxeXc/exec?folio=${folio}`);
+      const response = await fetch(`https://script.google.com/macros/s/AKfycbxu6fuNY-Vc4fIYiPNTGhobaAsbkgBOD9koCgOvbZPUNy6skr2YTuZ_FE3WGVDbXlFm/exec?folio=${folio}`);
       const data = await response.json();
 
       if (data.error) {
