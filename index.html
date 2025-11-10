@@ -77,26 +77,79 @@
     }
   </style>
 </head>
+
 <body class="menu-page">
 
-  <header>
-    <div class="logo">
-      <img src="https://lh3.googleusercontent.com/d/19w-yxgHtMzgLlQABl4n6k8Q_ua2Yqp2R=s220" alt="Logo institucional">
-    </div>
-  </header>
-
-  <h2>CONSULTA DE INVENTARIO DE ACTIVO FIJO</h2>
-  <div class="subtitulo">Subdirección de Control de Personal y Jud. de Control de Personal.</div>
-
-  <div class="botonera">
-    <button onclick="location.href='index-qr.html'">Escanear Código QR</button>
-    <button onclick="location.href='resguardante.html'">Consultar Bienes</button>
+  <!-- 🔒 BLOQUE DE ACCESO INSTITUCIONAL -->
+  <div id="bloque-solicitud" style="text-align:center; margin-top:50px;">
+    <h2 style="color:#333;">🔒 NECESITA AUTORIZACIÓN</h2>
+    <p>Ingrese su nombre completo y correo activo para solicitar acceso.</p>
+    <input type="text" id="nombre" placeholder="Nombre completo" style="width:300px; padding:8px;"><br><br>
+    <input type="email" id="correo" placeholder="Correo institucional" style="width:300px; padding:8px;"><br><br>
+    <button onclick="enviarSolicitud()" style="padding:10px 20px;">Enviar solicitud</button>
   </div>
 
-  <footer>
-    Inventario de Activo Fijo — Subdirección de Control de Personal<br>
-    Elaborado por: Lic. Jonathan Gómez Moreno
-  </footer>
+  <!-- 🔓 BLOQUE PRINCIPAL DE LA APP -->
+  <div id="bloque-app" style="display:none;">
+    <header>
+      <div class="logo">
+        <img src="https://lh3.googleusercontent.com/d/19w-yxgHtMzgLlQABl4n6k8Q_ua2Yqp2R=s220" alt="Logo institucional">
+      </div>
+    </header>
+
+    <h2>CONSULTA DE INVENTARIO DE ACTIVO FIJO</h2>
+    <div class="subtitulo">Subdirección de Control de Personal y Jud. de Control de Personal.</div>
+
+    <div class="botonera">
+      <button onclick="location.href='index-qr.html'">Escanear Código QR</button>
+      <button onclick="location.href='resguardante.html'">Consultar Bienes</button>
+    </div>
+
+    <footer>
+      Inventario de Activo Fijo — Subdirección de Control de Personal<br>
+      Elaborado por: Lic. Jonathan Gómez Moreno
+    </footer>
+  </div>
+<script>
+  const URL_SCRIPT = "https://script.google.com/macros/s/TU_DEPLOYMENT_ID/exec"; // ← Reemplaza con tu URL real
+
+  function enviarSolicitud() {
+    const nombre = document.getElementById('nombre').value.trim();
+    const correo = document.getElementById('correo').value.trim();
+
+    if (!nombre || !correo) {
+      alert("Por favor ingresa ambos campos.");
+      return;
+    }
+
+    fetch(`${URL_SCRIPT}?accion=solicitud&nombre=${encodeURIComponent(nombre)}&correo=${encodeURIComponent(correo)}`)
+      .then(res => res.text())
+      .then(msg => alert(msg));
+  }
+
+  function validarAcceso() {
+    let correo = localStorage.getItem('correo');
+    if (!correo) {
+      correo = prompt("Ingresa tu correo institucional:");
+      localStorage.setItem('correo', correo);
+    }
+
+    fetch(`${URL_SCRIPT}?accion=validar&correo=${encodeURIComponent(correo)}`)
+      .then(res => res.text())
+      .then(respuesta => {
+        if (respuesta === 'autorizado') {
+          document.getElementById('bloque-solicitud').style.display = 'none';
+          document.getElementById('bloque-app').style.display = 'block';
+        } else {
+          alert('Acceso denegado. Solicita autorización.');
+          localStorage.removeItem('correo');
+        }
+      });
+  }
+
+  window.onload = validarAcceso;
+</script>
 
 </body>
+
 </html>
