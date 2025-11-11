@@ -4,23 +4,16 @@
   <meta charset="UTF-8">
   <title>Menú Principal - Inventario</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
 
-  
-  <link rel="icon" type="image/png" href="imagen-inventario.png"> 
-  <!-- Imagen de previsualización para redes sociales
-   og:title → El título que aparecerá al compartir tu liga.
-  og:description → El texto descriptivo que acompaña la imagen.
-  og:image → La URL pública de tu logo (imagen-inventario.png).
-  og:url → La dirección de tu sitio en Vercel.
-  twitter:card → Hace que en Twitter/X se muestre la imagen grande.
-  -->
-<meta property="og:title" content="Inventario Web - CDMX">
-<meta property="og:description" content="Sistema institucional de consulta de inventario de bienes.">
-<meta property="og:image" content="https://inventario-web-omega.vercel.app/imagen-inventario.png">
-<meta property="og:url" content="https://inventario-web-omega.vercel.app/">
-<meta name="twitter:card" content="summary_large_image">
+  <!-- Metadatos para redes sociales -->
+  <meta property="og:title" content="Inventario Web - CDMX">
+  <meta property="og:description" content="Sistema institucional de consulta de inventario de bienes.">
+  <meta property="og:image" content="https://inventario-web-omega.vercel.app/imagen-inventario.png">
+  <meta property="og:url" content="https://inventario-web-omega.vercel.app/">
+  <meta name="twitter:card" content="summary_large_image">
 
-
+  <!-- Estilos institucionales -->
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -32,7 +25,7 @@
     }
 
     header {
-      background-color: #8A1538; /* Guinda CDMX */
+      background-color: #8A1538;
       color: white;
       padding: 12px 20px;
       display: flex;
@@ -41,12 +34,8 @@
       flex-wrap: wrap;
     }
 
-    .logo {
-      margin: 10px auto;
-    }
-
     .logo img {
-      height: 150px; /* Aumentado un 30% */
+      height: 150px;
     }
 
     h2 {
@@ -56,7 +45,7 @@
     }
 
     .subtitulo {
-      color: #006341; /* Verde CDMX */
+      color: #006341;
       font-size: 16px;
       margin-top: 8px;
       margin-bottom: 20px;
@@ -93,27 +82,27 @@
       color: #666;
     }
   </style>
+
+  <!-- Conexión con lógica JS -->
+  <script defer src="script-resguardante.js"></script>
 </head>
 
 <body class="menu-page">
 
-  <!-- 🔒 BLOQUE DE ACCESO INSTITUCIONAL -->
-<div id="bloque-solicitud" style="text-align:center; margin-top:50px;">
-  <h2 style="color:#333;">🔒 NECESITA AUTORIZACIÓN</h2>
-  <p>Ingrese su nombre completo y correo activo para solicitar acceso.</p>
-  <input type="text" id="nombre" placeholder="Nombre completo" style="width:300px; padding:8px;"><br><br>
-  <input type="email" id="correo" placeholder="Correo institucional" style="width:300px; padding:8px;"><br><br>
-  <button onclick="enviarSolicitud()" style="padding:10px 20px;">Enviar solicitud</button>
-  
-  <!-- 🔑 Nueva opción para usuarios ya registrados -->
-  <p style="margin-top:20px;">¿Ya se registró?</p>
-  <button onclick="accesoDirecto()" style="padding:10px 20px; background-color:#006341; color:white; border:none; border-radius:6px;">
-    Ingresar con correo registrado
-  </button>
-</div>
+  <!-- 🔒 Carátula de solicitud -->
+  <div id="solicitud" style="text-align:center; margin-top:50px;">
+    <h2 style="color:#333;">🔒 NECESITA AUTORIZACIÓN</h2>
+    <p>Ingrese su nombre completo y correo institucional para solicitar acceso.</p>
+    <form id="formSolicitud">
+      <input type="text" id="nombre" placeholder="Nombre completo" style="width:300px; padding:8px;" required><br><br>
+      <input type="email" id="correo" placeholder="Correo institucional" style="width:300px; padding:8px;" required><br><br>
+      <button type="submit" style="padding:10px 20px;">Enviar solicitud</button>
+    </form>
+    <div id="mensajeSolicitud" style="margin-top:10px;"></div>
+  </div>
 
-  <!-- 🔓 BLOQUE PRINCIPAL DE LA APP -->
-  <div id="bloque-app" style="display:none;">
+  <!-- 🔓 Menú principal -->
+  <div id="menuPrincipal" style="display:none;">
     <header>
       <div class="logo">
         <img src="https://lh3.googleusercontent.com/d/19w-yxgHtMzgLlQABl4n6k8Q_ua2Yqp2R=s220" alt="Logo institucional">
@@ -126,96 +115,21 @@
     <div class="botonera">
       <button onclick="location.href='index-qr.html'">Escanear Código QR</button>
       <button onclick="location.href='resguardante.html'">Consultar Bienes</button>
+      <button id="botonLogout" style="background-color:#c00;">Cerrar sesión</button>
     </div>
+
+    <!-- 🟩 Mensaje institucional -->
+    <div id="resumenBox" style="text-align:center; font-size:16px; margin-top:10px;"></div>
 
     <footer>
       Inventario de Activo Fijo — Subdirección de Control de Personal<br>
       Elaborado por: Lic. Jonathan Gómez Moreno
     </footer>
   </div>
-<script>
-  const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbxu6fuNY-Vc4fIYiPNTGhobaAsbkgBOD9koCgOvbZPUNy6skr2YTuZ_FE3WGVDbXlFm/exec";
 
-  function enviarSolicitud() {
-    const nombre = document.getElementById('nombre').value.trim();
-    const correo = document.getElementById('correo').value.trim();
-
-    if (!nombre || !correo) {
-      alert("Por favor ingresa ambos campos.");
-      return;
-    }
-
-    console.log("🔍 URL generada:", `${URL_SCRIPT}?accion=validar&correo=${encodeURIComponent(correo)}`);
-    console.log("📧 Correo recuperado:", correo);
-
-
-fetch(`${URL_SCRIPT}?accion=solicitud&nombre=${encodeURIComponent(nombre)}&correo=${encodeURIComponent(correo)}`)
-  .then(res => res.text())
-  .then(msg => alert(msg));
-
-  }
-
-  function validarAcceso() {
-  let correo = localStorage.getItem('correo');
-
-  if (!correo || correo.trim() === "") {
-    correo = prompt("Ingresa tu correo institucional o personal:");
-    if (!correo || correo.trim() === "") {
-      alert("Correo no válido. Intenta de nuevo.");
-      localStorage.removeItem('correo');
-      return;
-    }
-    localStorage.setItem('correo', correo);
-  }
-
-  console.log("📦 Correo en localStorage:", correo);
-
-  fetch(`${URL_SCRIPT}?accion=validar&correo=${encodeURIComponent(correo)}`)
-    .then(res => res.text())
-    .then(respuesta => {
-      if (respuesta === 'autorizado') {
-        document.getElementById('bloque-solicitud').style.display = 'none';
-        document.getElementById('bloque-app').style.display = 'block';
-      } else {
-        alert('Acceso denegado. Solicita autorización.');
-        localStorage.removeItem('correo');
-      }
-    })
-    .catch(error => {
-      console.error("Error en validación:", error);
-      alert("Error de validación. Regresa más tarde.");
-    });
-}
-
-// 🔑 Nueva función para acceso directo
-  function accesoDirecto() {
-    let correo = prompt("Ingrese el correo institucional con el que se registró:");
-    if (!correo || correo.trim() === "") {
-      alert("Correo no válido. Intente de nuevo.");
-      return;
-    }
-
-    localStorage.setItem('correo', correo);
-
-    fetch(`${URL_SCRIPT}?accion=validar&correo=${encodeURIComponent(correo)}`)
-      .then(res => res.text())
-      .then(respuesta => {
-        if (respuesta === 'autorizado') {
-          document.getElementById('bloque-solicitud').style.display = 'none';
-          document.getElementById('bloque-app').style.display = 'block';
-        } else {
-          alert("Acceso denegado. Solicite autorización.");
-          localStorage.removeItem('correo');
-        }
-      })
-      .catch(error => {
-        console.error("Error en validación:", error);
-        alert("Error de validación. Intente más tarde.");
-      });
-  }
-
-  window.onload = validarAcceso;
-</script>
-
+  <!-- Loader oculto -->
+  <div id="loader" style="display:none; text-align:center; padding:20px; font-weight:bold;">
+    Validando acceso…
+  </div>
 </body>
 </html>
